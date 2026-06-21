@@ -424,3 +424,18 @@ h1 {
   color: #8f9bb3;
   font-size: 11px;
 }
+
+.match-meta {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin-bottom: 18px;
+  color: #8f9bb3;
+  font-size: 12px;
+}
+
+.match-meta span {
+  background: #111b2c;
+  padding: 6px 12px;
+  border-radius: 999px;
+}

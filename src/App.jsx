@@ -8,6 +8,13 @@ const tennisPoints = ['0', '15', '30', '40'];
 export default function App() {
   const [match, setMatch] = useState({
     tournament: 'ATP Halle',
+
+    round: 'Round of 16',
+
+    courtName: 'Center Court',
+
+    matchTime: '00:00:00',
+
     playerA: {
       name: 'Fonseca',
       flag: '🇧🇷',
@@ -21,15 +28,23 @@ export default function App() {
       games: 0,
       sets: 0,
     },
+
     pointA: 0,
+
     pointB: 0,
+
     advantage: null,
+
     event: '',
+
     events: [],
+
     tokenPositions: {
       top: 'center',
       bottom: 'center',
     },
+
+    view: 'producer',
   });
 
   function getScoreDisplay() {
@@ -59,8 +74,8 @@ export default function App() {
     }));
   }
 
-  function flashEvent(eventName) {
-    moveTokens('A');
+  function flashEvent(eventName, winner = 'A') {
+    moveTokens(winner);
     addTimelineEvent(eventName);
 
     setMatch((prev) => ({
@@ -84,8 +99,8 @@ export default function App() {
       top = 'left';
       bottom = 'right';
     } else {
-      top = 'left';
-      bottom = 'right';
+      top = 'right';
+      bottom = 'left';
     }
 
     setMatch((prev) => ({
@@ -102,6 +117,43 @@ export default function App() {
       ...prev,
       events: [text, ...prev.events].slice(0, 5),
     }));
+  }
+
+  function handleMatchEvent(matchEvent) {
+    const { type, winner } = matchEvent;
+
+    if (type === 'POINT') {
+      addPoint(winner);
+      return;
+    }
+    if (type === 'ACE') {
+      flashEvent('ACE', winner);
+      return;
+    }
+
+    if (type === 'WINNER') {
+      flashEvent('WINNER', winner);
+      return;
+    }
+
+    if (type === 'BREAK_POINT') {
+      flashEvent('BREAK POINT');
+      return;
+    }
+
+    if (type === 'DEUCE') {
+      flashEvent('DEUCE');
+      return;
+    }
+
+    if (type === 'SET_WON') {
+      flashEvent('SET WON');
+      return;
+    }
+
+    if (type === 'MATCH_WON') {
+      flashEvent('MATCH WON');
+    }
   }
 
   function addPoint(player) {
@@ -220,6 +272,14 @@ export default function App() {
           <h1>MatchFlow</h1>
           <p className="tournament">{match.tournament}</p>
 
+          <div className="match-meta">
+            <span>{match.round}</span>
+
+            <span>{match.courtName}</span>
+
+            <span>{match.matchTime}</span>
+          </div>
+
           <Scoreboard
             playerA={match.playerA}
             playerB={match.playerB}
@@ -305,23 +365,45 @@ export default function App() {
           />
 
           <div className="button-grid">
-            <button onClick={() => addPoint('A')}>+ Point A</button>
-            <button onClick={() => addPoint('B')}>+ Point B</button>
+            <button
+              onClick={() => handleMatchEvent({ type: 'POINT', winner: 'A' })}
+            >
+              + Point A
+            </button>
 
-            <button onClick={() => flashEvent('ACE')}>⚡ Ace</button>
-            <button onClick={() => flashEvent('WINNER')}>Winner</button>
+            <button
+              onClick={() => handleMatchEvent({ type: 'POINT', winner: 'B' })}
+            >
+              + Point B
+            </button>
 
-            <button onClick={() => flashEvent('BREAK POINT')}>
+            <button
+              onClick={() => handleMatchEvent({ type: 'ACE', winner: 'A' })}
+            >
+              ⚡ Ace
+            </button>
+
+            <button
+              onClick={() => handleMatchEvent({ type: 'WINNER', winner: 'A' })}
+            >
+              Winner
+            </button>
+
+            <button onClick={() => handleMatchEvent({ type: 'BREAK_POINT' })}>
               🔥 Break Point
             </button>
 
-            <button onClick={() => flashEvent('DEUCE')}>🟠 Deuce</button>
-            <button onClick={() => flashEvent('SET WON')}>🎉 Set Won</button>
-            <button onClick={() => flashEvent('MATCH WON')}>
-              🏆 Match Won
+            <button onClick={() => handleMatchEvent({ type: 'DEUCE' })}>
+              🟠 Deuce
             </button>
 
-            <button onClick={resetPoints}>Reset Points</button>
+            <button onClick={() => handleMatchEvent({ type: 'SET_WON' })}>
+              🎉 Set Won
+            </button>
+
+            <button onClick={() => handleMatchEvent({ type: 'MATCH_WON' })}>
+              🏆 Match Won
+            </button>
           </div>
         </div>
       </div>

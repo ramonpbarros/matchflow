@@ -101,6 +101,12 @@ export default function App() {
   });
 
   function getScoreDisplay() {
+    const rules = scoringProfiles[match.scoringProfile];
+
+    if (rules.noAd && match.pointA >= 3 && match.pointB >= 3) {
+      return 'DECIDING POINT';
+    }
+
     if (match.pointA >= 3 && match.pointB >= 3) {
       if (match.advantage === 'A') return `ADV ${match.playerA.name}`;
       if (match.advantage === 'B') return `ADV ${match.playerB.name}`;
@@ -224,9 +230,9 @@ export default function App() {
       const playerPoint = prev[pointKey];
       const otherPoint = prev[otherPointKey];
 
-      function winGame() {
-        const rules = scoringProfiles[prev.scoringProfile];
+      const rules = scoringProfiles[prev.scoringProfile];
 
+      function winGame() {
         const nextGames = prev[playerKey].games + 1;
         const opponentGames = prev[opponentKey].games;
 
@@ -266,6 +272,10 @@ export default function App() {
             ...prev.events,
           ].slice(0, 5),
         };
+      }
+
+      if (rules.noAd && playerPoint >= 3 && otherPoint >= 3) {
+        return winGame();
       }
 
       // Deuce / Advantage zone

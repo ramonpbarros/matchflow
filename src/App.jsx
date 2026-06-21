@@ -1,32 +1,9 @@
 import { useState } from 'react';
 import './App.css';
+import { getPlayerColor } from './utils/playerColors';
+import Scoreboard from './components/Scoreboard';
 
 const tennisPoints = ['0', '15', '30', '40'];
-function getPlayerColor(flag) {
-  const colors = {
-    '🇧🇷': '#00a86b',
-
-    '🇩🇪': '#d4a017',
-
-    '🇫🇷': '#2563eb',
-
-    '🇪🇸': '#d62828',
-
-    '🇮🇹': '#2a9d8f',
-
-    '🇺🇸': '#4361ee',
-
-    '🇦🇷': '#5fa8d3',
-
-    '🇬🇧': '#264653',
-
-    '🇷🇸': '#3a86ff',
-
-    '🇦🇺': '#3d5a80',
-  };
-
-  return colors[flag] || '#9ca3af';
-}
 
 export default function App() {
   const [match, setMatch] = useState({
@@ -34,10 +11,15 @@ export default function App() {
     playerA: {
       name: 'Fonseca',
       flag: '🇧🇷',
+      games: 0,
+      sets: 0,
     },
+
     playerB: {
       name: 'Altmaier',
       flag: '🇩🇪',
+      games: 0,
+      sets: 0,
     },
     pointA: 0,
     pointB: 0,
@@ -124,18 +106,50 @@ export default function App() {
 
   function addPoint(player) {
     moveTokens(player);
+
     setMatch((prev) => {
       const isA = player === 'A';
       const pointKey = isA ? 'pointA' : 'pointB';
       const otherPointKey = isA ? 'pointB' : 'pointA';
-      const playerName = isA ? prev.playerA.name : prev.playerB.name;
+
+      const playerKey = isA ? 'playerA' : 'playerB';
+      const opponentKey = isA ? 'playerB' : 'playerA';
+      const playerName = prev[playerKey].name;
 
       const playerPoint = prev[pointKey];
       const otherPoint = prev[otherPointKey];
 
+      function winGame() {
+        const nextGames = prev[playerKey].games + 1;
+        const winsSet = nextGames >= 6;
+
+        return {
+          ...prev,
+          pointA: 0,
+          pointB: 0,
+          advantage: null,
+
+          [playerKey]: {
+            ...prev[playerKey],
+            games: winsSet ? 0 : nextGames,
+            sets: winsSet ? prev[playerKey].sets + 1 : prev[playerKey].sets,
+          },
+
+          [opponentKey]: {
+            ...prev[opponentKey],
+            games: winsSet ? 0 : prev[opponentKey].games,
+          },
+
+          event: winsSet ? `SET ${playerName}` : `GAME ${playerName}`,
+          events: [
+            winsSet ? `🎉 Set ${playerName}` : `🏆 Game ${playerName}`,
+            ...prev.events,
+          ].slice(0, 5),
+        };
+      }
+
       // Deuce / Advantage zone
       if (playerPoint >= 3 && otherPoint >= 3) {
-        // No advantage yet -> player gets advantage
         if (prev.advantage === null) {
           return {
             ...prev,
@@ -145,19 +159,10 @@ export default function App() {
           };
         }
 
-        // Player already had advantage -> wins game
         if (prev.advantage === player) {
-          return {
-            ...prev,
-            pointA: 0,
-            pointB: 0,
-            advantage: null,
-            event: `GAME ${playerName}`,
-            events: [`🏆 Game ${playerName}`, ...prev.events].slice(0, 5),
-          };
+          return winGame();
         }
 
-        // Other player had advantage -> back to deuce
         return {
           ...prev,
           advantage: null,
@@ -170,14 +175,7 @@ export default function App() {
       const newPoint = playerPoint + 1;
 
       if (newPoint >= 4 && otherPoint <= 2) {
-        return {
-          ...prev,
-          pointA: 0,
-          pointB: 0,
-          advantage: null,
-          event: `GAME ${playerName}`,
-          events: [`🏆 Game ${playerName}`, ...prev.events].slice(0, 5),
-        };
+        return winGame();
       }
 
       return {
@@ -222,17 +220,11 @@ export default function App() {
           <h1>MatchFlow</h1>
           <p className="tournament">{match.tournament}</p>
 
-          <div className="scoreboard">
-            <span>
-              {match.playerA.name} {match.playerA.flag}
-            </span>
-
-            <strong>{getScoreDisplay()}</strong>
-
-            <span>
-              {match.playerB.name} {match.playerB.flag}
-            </span>
-          </div>
+          <Scoreboard
+            playerA={match.playerA}
+            playerB={match.playerB}
+            score={getScoreDisplay()}
+          />
 
           <div
             className={`court ${match.event

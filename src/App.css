@@ -439,3 +439,9 @@ h1 {
   padding: 6px 12px;
   border-radius: 999px;
 }
+
+.timeline-empty {
+  color: #8f9bb3;
+  font-size: 14px;
+  margin: 0;
+}

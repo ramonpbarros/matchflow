@@ -4,7 +4,9 @@ export default function Scoreboard({ playerA, playerB, score }) {
       <span>
         {playerA.name} {playerA.flag}
         <small>
-          Sets {playerA.sets} | Games {playerA.games}
+          {playerA.sets === 1 ? 'Set' : 'Sets'} {playerA.sets}
+          {' | '}
+          {playerA.games === 1 ? 'Game' : 'Games'} {playerA.games}
         </small>
       </span>
 
@@ -13,7 +15,9 @@ export default function Scoreboard({ playerA, playerB, score }) {
       <span>
         {playerB.name} {playerB.flag}
         <small>
-          Sets {playerB.sets} | Games {playerB.games}
+          {playerB.sets === 1 ? 'Set' : 'Sets'} {playerB.sets}
+          {' | '}
+          {playerB.games === 1 ? 'Game' : 'Games'} {playerB.games}
         </small>
       </span>
     </div>

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import './App.css';
 import { getPlayerColor } from './utils/playerColors';
 import Scoreboard from './components/Scoreboard';
+import Timeline from './components/Timeline';
 
 const tennisPoints = ['0', '15', '30', '40'];
 
@@ -34,6 +35,8 @@ export default function App() {
     pointB: 0,
 
     advantage: null,
+
+    tieBreak: false,
 
     event: '',
 
@@ -173,12 +176,22 @@ export default function App() {
 
       function winGame() {
         const nextGames = prev[playerKey].games + 1;
-        const winsSet = nextGames >= 6;
+
+        const opponentGames = prev[opponentKey].games;
+
+        const winsSet = nextGames >= 6 && nextGames - opponentGames >= 2;
+
+        const entersTieBreak = nextGames === 6 && opponentGames === 6;
 
         return {
           ...prev,
+
+          tieBreak: entersTieBreak,
+
           pointA: 0,
+
           pointB: 0,
+
           advantage: null,
 
           [playerKey]: {
@@ -193,6 +206,7 @@ export default function App() {
           },
 
           event: winsSet ? `SET ${playerName}` : `GAME ${playerName}`,
+
           events: [
             winsSet ? `🎉 Set ${playerName}` : `🏆 Game ${playerName}`,
             ...prev.events,
@@ -273,6 +287,9 @@ export default function App() {
           <p className="tournament">{match.tournament}</p>
 
           <div className="match-meta">
+            {match.tieBreak && (
+              <div className="tie-break-banner">🔥 TIE BREAK</div>
+            )}
             <span>{match.round}</span>
 
             <span>{match.courtName}</span>
@@ -322,15 +339,7 @@ export default function App() {
             {match.event && <div className="event-badge">{match.event}</div>}
           </div>
         </div>
-        <div className="timeline">
-          <h3>📖 Match Story</h3>
-
-          {match.events.map((item, index) => (
-            <div key={index} className="timeline-item">
-              {item}
-            </div>
-          ))}
-        </div>
+        <Timeline events={match.events} />
         <div className="creator-panel">
           <h2>Creator Controls</h2>
 
@@ -338,6 +347,24 @@ export default function App() {
           <input
             value={match.tournament}
             onChange={(e) => updateMatch('tournament', e.target.value)}
+          />
+
+          <label>Round</label>
+          <input
+            value={match.round}
+            onChange={(e) => updateMatch('round', e.target.value)}
+          />
+
+          <label>Court</label>
+          <input
+            value={match.courtName}
+            onChange={(e) => updateMatch('courtName', e.target.value)}
+          />
+
+          <label>Match Time</label>
+          <input
+            value={match.matchTime}
+            onChange={(e) => updateMatch('matchTime', e.target.value)}
           />
 
           <label>Player A Name</label>
@@ -404,6 +431,7 @@ export default function App() {
             <button onClick={() => handleMatchEvent({ type: 'MATCH_WON' })}>
               🏆 Match Won
             </button>
+            <button onClick={resetPoints}>Reset Points</button>
           </div>
         </div>
       </div>

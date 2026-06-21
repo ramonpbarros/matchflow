@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import './App.css';
-import { getPlayerColor } from './utils/playerColors';
-import Scoreboard from './components/Scoreboard';
 import Timeline from './components/Timeline';
+import BroadcastView from './components/BroadcastView';
 
 const tennisPoints = ['0', '15', '30', '40'];
 
@@ -344,69 +343,13 @@ export default function App() {
   return (
     <div className="app">
       <div className="workspace">
-        <div className="phone">
-          <div className="live">● LIVE</div>
-
-          <h1>MatchFlow</h1>
-          <p className="tournament">{match.tournament}</p>
-
-          {match.tieBreak && (
-            <div className="tie-break-banner">🔥 TIE BREAK</div>
-          )}
-
-          <div className="match-meta">
-            <span>{match.round}</span>
-
-            <span>{match.courtName}</span>
-
-            <span>{match.matchTime}</span>
+        <div className="broadcast-row">
+          <div className="phone">
+            <BroadcastView match={match} score={getScoreDisplay()} />
           </div>
 
-          <Scoreboard
-            playerA={match.playerA}
-            playerB={match.playerB}
-            score={getScoreDisplay()}
-          />
-
-          <div
-            className={`court ${match.broadcastEvent
-              .toLowerCase()
-              .replaceAll(' ', '-')}`}
-          >
-            <div className="court-lines">
-              <div className="line baseline top-line" />
-              <div className="line baseline bottom-line" />
-              <div className="line sideline left-line" />
-              <div className="line sideline right-line" />
-              <div className="line doubles-left" />
-              <div className="line doubles-right" />
-              <div className="line service top-service" />
-              <div className="line service bottom-service" />
-              <div className="line center-service" />
-              <div className="line net-line" />
-            </div>
-
-            <div
-              className={`player top ${match.tokenPositions.top}`}
-              style={{
-                background: getPlayerColor(match.playerB.flag),
-              }}
-            ></div>
-            <div className="ball">🎾</div>
-            <div className="ball-shadow"></div>
-            <div
-              className={`player bottom ${match.tokenPositions.bottom}`}
-              style={{
-                background: getPlayerColor(match.playerA.flag),
-              }}
-            ></div>
-
-            {match.broadcastEvent && (
-              <div className="event-badge">{match.broadcastEvent}</div>
-            )}
-          </div>
+          <Timeline events={match.events} />
         </div>
-        <Timeline events={match.events} />
         <div className="creator-panel">
           <h2>Creator Controls</h2>
 

@@ -445,3 +445,39 @@ h1 {
   font-size: 14px;
   margin: 0;
 }
+
+.tie-break-banner {
+  width: fit-content;
+
+  margin: 12px auto;
+
+  padding: 8px 18px;
+
+  border-radius: 999px;
+
+  background: linear-gradient(90deg, #ff6b00, #ff3030);
+
+  color: white;
+
+  font-weight: 800;
+
+  letter-spacing: 1px;
+
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.creator-panel select {
+  width: 100%;
+  background: #111b2c;
+  color: white;
+  border: 1px solid #26324d;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 15px;
+}

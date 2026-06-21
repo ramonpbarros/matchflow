@@ -6,6 +6,52 @@ import Timeline from './components/Timeline';
 
 const tennisPoints = ['0', '15', '30', '40'];
 
+const scoringProfiles = {
+  ATP_TOUR_SINGLES: {
+    label: 'ATP Tour Singles',
+    setsToWin: 2,
+    gamesToWinSet: 6,
+    winSetBy: 2,
+    tieBreakAt: 6,
+    tieBreakPointsToWin: 7,
+    decidingSetTieBreakPointsToWin: 7,
+    noAd: false,
+  },
+
+  GRAND_SLAM_MENS_SINGLES: {
+    label: "Grand Slam Men's Singles",
+    setsToWin: 3,
+    gamesToWinSet: 6,
+    winSetBy: 2,
+    tieBreakAt: 6,
+    tieBreakPointsToWin: 7,
+    decidingSetTieBreakPointsToWin: 10,
+    noAd: false,
+  },
+
+  GRAND_SLAM_WOMENS_SINGLES: {
+    label: "Grand Slam Women's Singles",
+    setsToWin: 2,
+    gamesToWinSet: 6,
+    winSetBy: 2,
+    tieBreakAt: 6,
+    tieBreakPointsToWin: 7,
+    decidingSetTieBreakPointsToWin: 10,
+    noAd: false,
+  },
+
+  DOUBLES_NO_AD: {
+    label: 'Doubles No-Ad',
+    setsToWin: 2,
+    gamesToWinSet: 6,
+    winSetBy: 2,
+    tieBreakAt: 6,
+    tieBreakPointsToWin: 7,
+    decidingSetTieBreakPointsToWin: 10,
+    noAd: true,
+  },
+};
+
 export default function App() {
   const [match, setMatch] = useState({
     tournament: 'ATP Halle',
@@ -15,6 +61,10 @@ export default function App() {
     courtName: 'Center Court',
 
     matchTime: '00:00:00',
+
+    scoringProfile: 'ATP_TOUR_SINGLES',
+
+    eventType: 'Singles',
 
     playerA: {
       name: 'Fonseca',
@@ -38,7 +88,7 @@ export default function App() {
 
     tieBreak: false,
 
-    event: '',
+    broadcastEvent: '',
 
     events: [],
 
@@ -83,13 +133,13 @@ export default function App() {
 
     setMatch((prev) => ({
       ...prev,
-      event: eventName,
+      broadcastEvent: eventName,
     }));
 
     setTimeout(() => {
       setMatch((prev) => ({
         ...prev,
-        event: '',
+        broadcastEvent: '',
       }));
     }, 1200);
   }
@@ -175,13 +225,17 @@ export default function App() {
       const otherPoint = prev[otherPointKey];
 
       function winGame() {
-        const nextGames = prev[playerKey].games + 1;
+        const rules = scoringProfiles[prev.scoringProfile];
 
+        const nextGames = prev[playerKey].games + 1;
         const opponentGames = prev[opponentKey].games;
 
-        const winsSet = nextGames >= 6 && nextGames - opponentGames >= 2;
+        const winsSet =
+          nextGames >= rules.gamesToWinSet &&
+          nextGames - opponentGames >= rules.winSetBy;
 
-        const entersTieBreak = nextGames === 6 && opponentGames === 6;
+        const entersTieBreak =
+          nextGames === rules.tieBreakAt && opponentGames === rules.tieBreakAt;
 
         return {
           ...prev,
@@ -205,7 +259,7 @@ export default function App() {
             games: winsSet ? 0 : prev[opponentKey].games,
           },
 
-          event: winsSet ? `SET ${playerName}` : `GAME ${playerName}`,
+          broadcastEvent: winsSet ? `SET ${playerName}` : `GAME ${playerName}`,
 
           events: [
             winsSet ? `🎉 Set ${playerName}` : `🏆 Game ${playerName}`,
@@ -220,7 +274,7 @@ export default function App() {
           return {
             ...prev,
             advantage: player,
-            event: `ADVANTAGE ${playerName}`,
+            broadcastEvent: `ADVANTAGE ${playerName}`,
             events: [`🟢 Advantage ${playerName}`, ...prev.events].slice(0, 5),
           };
         }
@@ -232,7 +286,7 @@ export default function App() {
         return {
           ...prev,
           advantage: null,
-          event: 'DEUCE',
+          broadcastEvent: 'DEUCE',
           events: ['🟠 Deuce', ...prev.events].slice(0, 5),
         };
       }
@@ -247,7 +301,7 @@ export default function App() {
       return {
         ...prev,
         [pointKey]: newPoint,
-        event: `POINT ${player}`,
+        broadcastEvent: `POINT ${player}`,
         events: [`🎾 Point ${playerName}`, ...prev.events].slice(0, 5),
       };
     });
@@ -255,7 +309,7 @@ export default function App() {
     setTimeout(() => {
       setMatch((prev) => ({
         ...prev,
-        event: '',
+        broadcastEvent: '',
       }));
     }, 1200);
   }
@@ -266,13 +320,13 @@ export default function App() {
       pointA: 0,
       pointB: 0,
       advantage: null,
-      event: 'RESET',
+      broadcastEvent: 'RESET',
     }));
 
     setTimeout(() => {
       setMatch((prev) => ({
         ...prev,
-        event: '',
+        broadcastEvent: '',
       }));
     }, 700);
   }
@@ -286,10 +340,11 @@ export default function App() {
           <h1>MatchFlow</h1>
           <p className="tournament">{match.tournament}</p>
 
+          {match.tieBreak && (
+            <div className="tie-break-banner">🔥 TIE BREAK</div>
+          )}
+
           <div className="match-meta">
-            {match.tieBreak && (
-              <div className="tie-break-banner">🔥 TIE BREAK</div>
-            )}
             <span>{match.round}</span>
 
             <span>{match.courtName}</span>
@@ -304,7 +359,7 @@ export default function App() {
           />
 
           <div
-            className={`court ${match.event
+            className={`court ${match.broadcastEvent
               .toLowerCase()
               .replaceAll(' ', '-')}`}
           >
@@ -336,7 +391,9 @@ export default function App() {
               }}
             ></div>
 
-            {match.event && <div className="event-badge">{match.event}</div>}
+            {match.broadcastEvent && (
+              <div className="event-badge">{match.broadcastEvent}</div>
+            )}
           </div>
         </div>
         <Timeline events={match.events} />
@@ -348,6 +405,16 @@ export default function App() {
             value={match.tournament}
             onChange={(e) => updateMatch('tournament', e.target.value)}
           />
+
+          <label>Event Type</label>
+          <select
+            value={match.eventType}
+            onChange={(e) => updateMatch('eventType', e.target.value)}
+          >
+            <option value="Singles">Singles</option>
+            <option value="Doubles">Doubles</option>
+            <option value="Mixed Doubles">Mixed Doubles</option>
+          </select>
 
           <label>Round</label>
           <input
@@ -366,6 +433,18 @@ export default function App() {
             value={match.matchTime}
             onChange={(e) => updateMatch('matchTime', e.target.value)}
           />
+
+          <label>Scoring Format</label>
+          <select
+            value={match.scoringProfile}
+            onChange={(e) => updateMatch('scoringProfile', e.target.value)}
+          >
+            {Object.entries(scoringProfiles).map(([key, profile]) => (
+              <option key={key} value={key}>
+                {profile.label}
+              </option>
+            ))}
+          </select>
 
           <label>Player A Name</label>
           <input

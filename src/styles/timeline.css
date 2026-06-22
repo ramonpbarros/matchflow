@@ -1,0 +1,40 @@
+.timeline {
+  width: 220px;
+  margin-top: 10px;
+  background: linear-gradient(
+    180deg,
+    rgba(17, 27, 44, 0.96),
+    rgba(10, 17, 30, 0.96)
+  );
+  border: 1px solid var(--border-soft);
+  border-radius: 20px;
+  padding: 16px;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
+}
+
+.timeline h3 {
+  margin: 0 0 12px;
+  font-size: 18px;
+}
+
+.timeline-item {
+  padding: 9px 0;
+  border-bottom: 1px solid #26324d;
+  color: #e8ecf8;
+  font-size: 14px;
+}
+
+.timeline-item:last-child {
+  border-bottom: none;
+}
+
+.timeline-empty {
+  color: var(--muted);
+  font-size: 14px;
+  margin: 0;
+}
+
+.control-section .timeline {
+  width: 100%;
+  margin: 0;
+}

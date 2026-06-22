@@ -1,0 +1,63 @@
+.app {
+  min-height: 100vh;
+  padding: 24px;
+  overflow: auto;
+}
+
+.workspace {
+  display: grid;
+  grid-template-columns: minmax(340px, 400px) minmax(360px, 460px);
+  justify-content: center;
+  align-items: start;
+  gap: 28px;
+}
+
+/* 13-inch laptop fit */
+@media (max-width: 1050px) {
+  .workspace {
+    grid-template-columns: 360px 420px;
+    gap: 20px;
+  }
+
+  .phone {
+    width: 360px;
+    height: 720px;
+  }
+
+  .creator-panel {
+    width: 420px;
+    max-height: 720px;
+  }
+
+  .phone h1 {
+    font-size: 38px;
+  }
+
+  .court {
+    height: 360px;
+  }
+}
+
+/* Narrow screens stack */
+@media (max-width: 850px) {
+  .workspace {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .phone,
+  .creator-panel {
+    width: 100%;
+    max-width: 420px;
+  }
+
+  .phone {
+    height: auto;
+    min-height: 720px;
+  }
+
+  .creator-panel {
+    max-height: none;
+  }
+}

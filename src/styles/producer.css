@@ -1,0 +1,129 @@
+.creator-panel {
+  width: 460px;
+  max-width: 100%;
+  min-height: 560px;
+  max-height: 760px;
+  overflow-y: auto;
+  display: block;
+  background: linear-gradient(
+    180deg,
+    rgba(8, 17, 31, 0.98),
+    rgba(5, 11, 22, 0.98)
+  );
+  border: 1px solid var(--border);
+  border-radius: 26px;
+  padding: 24px;
+  color: white;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.48),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.creator-panel h2 {
+  margin: 0 0 22px;
+  text-align: center;
+  font-size: 22px;
+  letter-spacing: -0.5px;
+}
+
+.creator-panel label {
+  display: block;
+  margin: 13px 0 6px;
+  color: var(--muted-light);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+.creator-panel input,
+.creator-panel select {
+  width: 100%;
+  background: var(--panel-soft);
+  color: white;
+  border: 1px solid var(--border);
+  padding: 12px;
+  border-radius: 11px;
+  font-size: 14px;
+  outline: none;
+  transition: border 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.creator-panel select {
+  appearance: none;
+  cursor: pointer;
+}
+
+.creator-panel input:focus,
+.creator-panel select:focus {
+  border-color: rgba(79, 140, 255, 0.9);
+  box-shadow: 0 0 0 4px rgba(79, 140, 255, 0.14);
+  background: #15213a;
+}
+
+.control-tabs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 18px;
+  padding: 6px;
+  border-radius: 14px;
+  background: rgba(17, 27, 44, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.control-tabs button {
+  background: transparent;
+  color: #8f9bb3;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 8px;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.control-tabs button.active {
+  background: #263a63;
+  color: white;
+}
+
+.control-section {
+  animation: fadeIn 0.18s ease-out;
+}
+
+.button-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.button-grid button {
+  background: linear-gradient(180deg, #1b2947, #14203a);
+  color: white;
+  border: 1px solid #31446f;
+  border-radius: 12px;
+  padding: 12px;
+  min-height: 46px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.2s ease, border 0.2s ease;
+}
+
+.button-grid button:hover {
+  background: linear-gradient(180deg, #263a63, #1c2c50);
+  border-color: #4f68a3;
+  transform: translateY(-1px);
+}
+
+.button-grid button:active {
+  transform: translateY(0);
+}
+
+.creator-panel::-webkit-scrollbar {
+  width: 8px;
+}
+
+.creator-panel::-webkit-scrollbar-thumb {
+  background: #263a63;
+  border-radius: 999px;
+}

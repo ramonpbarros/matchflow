@@ -1,0 +1,352 @@
+.court {
+  position: relative;
+  height: 430px;
+  margin-top: 30px;
+  background: radial-gradient(
+      circle at center,
+      rgba(255, 255, 255, 0.07),
+      transparent 36%
+    ),
+    linear-gradient(180deg, #357926, #235c1c);
+  border-radius: 18px;
+  overflow: hidden;
+  border: 4px solid rgba(255, 255, 255, 0.92);
+  transition: box-shadow 0.2s ease, background 0.2s ease;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.42),
+    inset 0 0 35px rgba(0, 0, 0, 0.16);
+}
+
+.court::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.04),
+      transparent 25%,
+      transparent 75%,
+      rgba(255, 255, 255, 0.04)
+    ),
+    radial-gradient(circle at center, transparent 45%, rgba(0, 0, 0, 0.12));
+  pointer-events: none;
+}
+
+.court-lines {
+  position: absolute;
+  inset: 12px;
+  z-index: 2;
+}
+
+.line {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.18);
+}
+
+.baseline {
+  left: 0;
+  width: 100%;
+  height: 3px;
+}
+
+.top-line {
+  top: 0;
+}
+
+.bottom-line {
+  bottom: 0;
+}
+
+.doubles-left {
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+}
+
+.doubles-right {
+  top: 0;
+  right: 0;
+  width: 3px;
+  height: 100%;
+}
+
+.sideline {
+  top: 0;
+  height: 100%;
+  width: 3px;
+}
+
+.left-line {
+  left: 18%;
+}
+
+.right-line {
+  right: 18%;
+}
+
+.service {
+  left: 18%;
+  width: 64%;
+  height: 3px;
+}
+
+.top-service {
+  top: 35%;
+}
+
+.bottom-service {
+  bottom: 35%;
+}
+
+.center-service {
+  left: 50%;
+  top: 35%;
+  width: 3px;
+  height: 30%;
+  transform: translateX(-50%);
+}
+
+.net-line {
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 4px;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.court-lines::before,
+.court-lines::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  width: 3px;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.95);
+  transform: translateX(-50%);
+}
+
+.court-lines::before {
+  top: 0;
+}
+
+.court-lines::after {
+  bottom: 0;
+}
+
+.player {
+  position: absolute;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.88);
+  z-index: 6;
+  transition: all 0.35s ease;
+  transform: translateX(-50%);
+  box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.12),
+    0 10px 20px rgba(0, 0, 0, 0.5);
+}
+
+.top {
+  top: 58px;
+}
+
+.bottom {
+  bottom: 58px;
+}
+
+.left {
+  left: 28%;
+}
+
+.center {
+  left: 50%;
+}
+
+.right {
+  left: 72%;
+}
+
+.ball {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 28px;
+  z-index: 7;
+  filter: drop-shadow(0 8px 8px rgba(0, 0, 0, 0.4));
+}
+
+.ball-shadow {
+  position: absolute;
+  left: 50%;
+  top: 52%;
+  width: 22px;
+  height: 8px;
+  background: black;
+  opacity: 0.25;
+  border-radius: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+}
+
+/* 2.5D COURT SCENE */
+
+.court-scene {
+  position: relative;
+  margin-top: 18px;
+  height: 430px;
+  perspective: 900px;
+}
+
+.court-environment {
+  position: relative;
+  height: 100%;
+  border-radius: 22px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at center, rgba(255,255,255,0.08), transparent 30%),
+    linear-gradient(180deg, #101826 0%, #07101e 100%);
+  box-shadow:
+    inset 0 0 60px rgba(0, 0, 0, 0.45),
+    0 18px 40px rgba(0, 0, 0, 0.45);
+}
+
+.stadium-shadow {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at top, rgba(255,255,255,0.08), transparent 32%),
+    radial-gradient(circle at bottom, rgba(0,0,0,0.55), transparent 55%);
+  z-index: 1;
+}
+
+.court-scene .court {
+  position: absolute;
+  left: 50%;
+  top: 52%;
+  width: 82%;
+  height: 72%;
+  margin-top: 0;
+  transform: translate(-50%, -50%) rotateX(10deg);
+  transform-origin: center;
+  z-index: 3;
+  border-radius: 16px;
+  background:
+    linear-gradient(180deg, #3f8a2e 0%, #27651f 100%);
+}
+
+/* Referee chair */
+
+.referee-chair {
+  position: absolute;
+  right: 20px;
+  top: 45%;
+  width: 34px;
+  height: 72px;
+  z-index: 6;
+  transform: translateY(-50%);
+}
+
+.chair-seat {
+  width: 30px;
+  height: 28px;
+  background: #d8dee9;
+  border-radius: 6px 6px 3px 3px;
+  box-shadow: 0 8px 14px rgba(0,0,0,0.35);
+}
+
+.chair-legs {
+  width: 24px;
+  height: 44px;
+  margin-left: 3px;
+  border-left: 4px solid #9aa5b8;
+  border-right: 4px solid #9aa5b8;
+  border-bottom: 4px solid #9aa5b8;
+}
+
+/* Benches */
+
+.bench {
+  position: absolute;
+  width: 54px;
+  height: 16px;
+  background: linear-gradient(180deg, #d9e0ea, #8894aa);
+  border-radius: 999px;
+  z-index: 4;
+  box-shadow: 0 10px 16px rgba(0,0,0,0.35);
+}
+
+.bench-left {
+  left: 22px;
+  top: 47%;
+}
+
+.bench-right {
+  right: 62px;
+  top: 57%;
+}
+
+/* Ball kids */
+
+.ball-kid {
+  position: absolute;
+  width: 13px;
+  height: 13px;
+  background: #f5c542;
+  border: 2px solid rgba(255,255,255,0.75);
+  border-radius: 50%;
+  z-index: 5;
+  box-shadow:
+    0 0 0 4px rgba(245,197,66,0.12),
+    0 8px 12px rgba(0,0,0,0.35);
+}
+
+.ball-kid-left-top {
+  left: 42px;
+  top: 78px;
+}
+
+.ball-kid-right-top {
+  right: 42px;
+  top: 78px;
+}
+
+.ball-kid-left-bottom {
+  left: 42px;
+  bottom: 64px;
+}
+
+.ball-kid-right-bottom {
+  right: 42px;
+  bottom: 64px;
+}
+
+/* REAL 3D COURT */
+
+.court-scene-3d {
+  position: relative;
+  height: 430px;
+  margin-top: 24px;
+  border-radius: 22px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at center, rgba(255, 255, 255, 0.08), transparent 32%),
+    linear-gradient(180deg, #101826, #050914);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    inset 0 0 70px rgba(0, 0, 0, 0.45),
+    0 20px 45px rgba(0, 0, 0, 0.45);
+}
+
+.court-scene-3d canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.court-event-badge {
+  pointer-events: none;
+}

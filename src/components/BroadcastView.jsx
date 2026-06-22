@@ -1,66 +1,77 @@
-import { getPlayerColor } from '../utils/playerColors';
+import CourtScene from './CourtScene';
 import Scoreboard from './Scoreboard';
 
 export default function BroadcastView({ match, score }) {
   return (
     <div className="broadcast-view">
-      <div className="live">● LIVE</div>
+      <div className="broadcast-topbar">
+        <span className="live-pill">● LIVE</span>
+        <span className="viewer-count">👁 2.4K</span>
+      </div>
 
-      <h1>MatchFlow</h1>
-      <p className="tournament">{match.tournament}</p>
+      <div className="broadcast-title">
+        <h1>{match.tournament}</h1>
+        <p>
+          {match.round} · {match.courtName}
+        </p>
+      </div>
 
       {match.tieBreak && <div className="tie-break-banner">🔥 TIE BREAK</div>}
 
-      <div className="match-meta">
-        <span>{match.round}</span>
-        <span>{match.courtName}</span>
-        <span>{match.matchTime}</span>
+      <div className="broadcast-score-row">
+        <div className="team-card team-card-a">
+          <div>
+            <strong>{match.playerA.name}</strong>
+            <span>{match.playerA.flag}</span>
+          </div>
+        </div>
+
+        <div className="main-score">
+          <strong>{score}</strong>
+          <span>Set {match.playerA.sets + match.playerB.sets + 1}</span>
+        </div>
+
+        <div className="team-card team-card-b">
+          <div>
+            <strong>{match.playerB.name}</strong>
+            <span>{match.playerB.flag}</span>
+          </div>
+        </div>
       </div>
 
       <Scoreboard
         playerA={match.playerA}
         playerB={match.playerB}
-        score={score}
+        score={`${match.playerA.games} - ${match.playerB.games}`}
       />
 
-      <div
-        className={`court ${match.broadcastEvent
-          .toLowerCase()
-          .replaceAll(' ', '-')}`}
-      >
-        <div className="court-lines">
-          <div className="line baseline top-line" />
-          <div className="line baseline bottom-line" />
-          <div className="line sideline left-line" />
-          <div className="line sideline right-line" />
-          <div className="line doubles-left" />
-          <div className="line doubles-right" />
-          <div className="line service top-service" />
-          <div className="line service bottom-service" />
-          <div className="line center-service" />
-          <div className="line net-line" />
+      <CourtScene match={match} />
+
+      <div className="broadcast-bottom-strip">
+        <div>
+          <span>Last Point</span>
+          <strong>{match.events[0] || 'Waiting...'}</strong>
         </div>
 
-        <div
-          className={`player top ${match.tokenPositions.top}`}
-          style={{
-            background: getPlayerColor(match.playerB.flag),
-          }}
-        ></div>
+        <div>
+          <span>Match Time</span>
+          <strong>{match.matchTime}</strong>
+        </div>
+      </div>
 
-        <div className="ball">🎾</div>
-        <div className="ball-shadow"></div>
-
-        <div
-          className={`player bottom ${match.tokenPositions.bottom}`}
-          style={{
-            background: getPlayerColor(match.playerA.flag),
-          }}
-        ></div>
-
-        {match.broadcastEvent && (
-          <div className="event-badge">{match.broadcastEvent}</div>
-        )}
+      <div className="social-rail">
+        <div>
+          ❤️<span>12.6K</span>
+        </div>
+        <div>
+          💬<span>184</span>
+        </div>
+        <div>
+          🔖<span>1,032</span>
+        </div>
+        <div>
+          ↗️<span>389</span>
+        </div>
       </div>
     </div>
   );

@@ -1,0 +1,107 @@
+.phone {
+  width: 400px;
+  height: 760px;
+  max-width: 100%;
+  background:
+    radial-gradient(circle at top, rgba(79, 140, 255, 0.12), transparent 35%),
+    linear-gradient(180deg, #08111f, #030711);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 34px;
+  padding: 22px;
+  color: white;
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.phone::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, rgba(255, 255, 255, 0.06), transparent 35%);
+  pointer-events: none;
+}
+
+.live {
+  color: var(--green);
+  font-weight: 900;
+  font-size: 11px;
+  text-align: center;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+}
+
+.phone h1 {
+  text-align: center;
+  margin: 12px 0 0;
+  font-size: 44px;
+  line-height: 1;
+  letter-spacing: -2px;
+}
+
+.tournament {
+  text-align: center;
+  margin: 6px 0 18px;
+  color: var(--muted-light);
+  font-size: 19px;
+}
+
+.match-meta {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 18px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.match-meta span {
+  background: rgba(17, 27, 44, 0.82);
+  border: 1px solid var(--border-soft);
+  padding: 7px 12px;
+  border-radius: 999px;
+  backdrop-filter: blur(10px);
+}
+
+.scoreboard {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background:
+    linear-gradient(180deg, rgba(20, 32, 55, 0.95), rgba(13, 22, 38, 0.95));
+  border: 1px solid var(--border-soft);
+  padding: 15px 16px;
+  border-radius: 18px;
+  margin-top: 18px;
+  font-size: 16px;
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.28);
+}
+
+.scoreboard span {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 110px;
+}
+
+.scoreboard span:last-child {
+  align-items: flex-end;
+  text-align: right;
+}
+
+.scoreboard strong {
+  font-size: 24px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  background: #07101f;
+  border: 1px solid var(--border-soft);
+  padding: 8px 14px;
+  border-radius: 12px;
+}
+
+.scoreboard small {
+  color: var(--muted);
+  font-size: 11px;
+}
